@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prego Dealer Matcher</title>
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+    }
+
+    body {
+        background-color: #f4f6fb;
+        color: #333;
+    }
+
+    /* HEADER */
+    .header {
+        background: linear-gradient(135deg, #1F4E79, #2980b9);
+        color: white;
+        text-align: center;
+        padding: 35px 20px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .header h1 {
+        font-size: 30px;
+        margin-bottom: 8px;
+        letter-spacing: 1px;
+    }
+
+    .header p {
+        font-size: 15px;
+        color: #BDD7EE;
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+        background: white;
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        padding: 20px;
+        border-bottom: 3px solid #FF69B4;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .stat {
+        text-align: center;
+    }
+
+    .stat-number {
+        display: block;
+        font-size: 26px;
+        font-weight: bold;
+        color: #1F4E79;
+    }
+
+    .stat-label {
+        display: block;
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 3px;
+    }
+
+    /* MAIN LAYOUT */
+    .main {
+        max-width: 1100px;
+        margin: 30px auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 25px;
+    }
+
+    /* INPUT CARD */
+    .input-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-top: 4px solid #1F4E79;
+    }
+
+    .input-card h2 {
+        color: #1F4E79;
+        font-size: 20px;
+        margin-bottom: 25px;
+    }
+
+    label {
+        display: block;
+        font-size: 13px;
+        font-weight: bold;
+        color: #555;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-top: 18px;
+        margin-bottom: 6px;
+    }
+
+    select, input[type="text"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        font-size: 15px;
+        color: #333;
+        background: #fafafa;
+        transition: border-color 0.2s;
+    }
+
+    select:focus, input[type="text"]:focus {
+        outline: none;
+        border-color: #1F4E79;
+        background: white;
+    }
+
+    button {
+        width: 100%;
+        padding: 16px;
+        background: linear-gradient(135deg, #1F4E79, #2980b9);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: 17px;
+        font-weight: bold;
+        margin-top: 25px;
+        cursor: pointer;
+        letter-spacing: 1px;
+        transition: transform 0.15s, box-shadow 0.15s;
+        box-shadow: 0 4px 15px rgba(31,78,121,0.3);
+    }
+
+    button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(31,78,121,0.4);
+    }
+
+    button:active {
+        transform: translateY(0);
+    }
+
+    /* RESULTS CARD */
+    .results-card {
+        background: white;
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        border-top: 4px solid #FF69B4;
+    }
+
+    .results-title {
+        color: #1F4E79;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f0f0f0;
+    }
+
+    /* PLACEHOLDER */
+    .placeholder {
+        text-align: center;
+        padding: 60px 20px;
+        color: #aaa;
+    }
+
+    .placeholder p:first-child {
+        font-size: 50px;
+        margin-bottom: 15px;
+    }
+
+    .placeholder p:last-child {
+        font-size: 15px;
+        line-height: 1.7;
+    }
+
+    /* DEALER CARDS */
+    .dealer-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 16px 18px;
+        margin-bottom: 12px;
+        border: 2px solid #e8ecf8;
+        transition: border-color 0.2s, transform 0.15s;
+    }
+
+    .dealer-card:hover {
+        border-color: #1F4E79;
+        transform: translateX(4px);
+    }
+
+    .rank-badge {
+        font-size: 28px;
+        width: 45px;
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .dealer-info {
+        flex: 1;
+    }
+
+    .dealer-name {
+        font-size: 15px;
+        font-weight: bold;
+        color: #1F4E79;
+        margin-bottom: 5px;
+    }
+
+    .dealer-meta {
+        font-size: 12px;
+        color: #888;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+
+    .score-box {
+        text-align: center;
+        flex-shrink: 0;
+    }
+
+    .score-number {
+        font-size: 28px;
+        font-weight: bold;
+        color: #FF69B4;
+        line-height: 1;
+    }
+
+    .score-out {
+        font-size: 11px;
+        color: #aaa;
+    }
+
+    .score-bar-wrap {
+        width: 60px;
+        height: 5px;
+        background: #e0e0e0;
+        border-radius: 5px;
+        margin: 5px auto 0;
+    }
+
+    .score-bar-fill {
+        height: 5px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #1F4E79, #FF69B4);
+    }
+
+    /* PREDICTION BOX */
+    .prediction-box {
+        background: #f8f9ff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-top: 20px;
+        border: 2px solid #e8ecf8;
+    }
+
+    .prediction-title {
+        font-size: 15px;
+        font-weight: bold;
+        color: #1F4E79;
+        margin-bottom: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .flags-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 15px;
+    }
+
+    .flag-box {
+        background: white;
+        border-radius: 10px;
+        padding: 12px;
+        text-align: center;
+        border: 1px solid #e0e0e0;
+    }
+
+    .flag-count {
+        font-size: 32px;
+        font-weight: bold;
+        line-height: 1;
+    }
+
+    .flag-green { color: #27ae60; }
+    .flag-red   { color: #e74c3c; }
+
+    .flag-label {
+        font-size: 11px;
+        color: #888;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        margin-top: 5px;
+    }
+
+    .prob-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        border-radius: 10px;
+        padding: 14px 18px;
+        margin-bottom: 12px;
+        border: 1px solid #e0e0e0;
+    }
+
+    .prob-label {
+        font-size: 13px;
+        color: #555;
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+    }
+
+    .prob-value {
+        font-size: 28px;
+        font-weight: bold;
+        color: #1F4E79;
+    }
+
+    .pred-result {
+        font-size: 14px;
+        color: #888;
+        margin-top: 3px;
+    }
+
+    .alert-box {
+        border-radius: 10px;
+        padding: 14px 18px;
+        font-size: 14px;
+        font-weight: bold;
+        text-align: center;
+        letter-spacing: 0.5px;
+    }
+
+    .alert-success {
+        background: #d5f5e3;
+        color: #1e8449;
+        border: 1px solid #a9dfbf;
+    }
+
+    .alert-warning {
+        background: #fef9e7;
+        color: #b7950b;
+        border: 1px solid #f9e79f;
+    }
+
+    .alert-danger {
+        background: #fdedec;
+        color: #c0392b;
+        border: 1px solid #f5b7b1;
+    }
+
+    /* MOBILE */
+    @media (max-width: 768px) {
+        .main {
+            grid-template-columns: 1fr;
+        }
+        .stats-bar {
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .header h1 {
+            font-size: 22px;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <div class="header">
+        <h1>🏢 PREGO DEALER MATCHING SYSTEM</h1>
+        <p>Find the right dealer for the right customer — instantly!</p>
+    </div>
+
+    <!-- STATS BAR -->
+    <div class="stats-bar">
+        <div class="stat">
+            <span class="stat-number">42</span>
+            <span class="stat-label">Total Dealers</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">177</span>
+            <span class="stat-label">Customers</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">₹38.7L</span>
+            <span class="stat-label">Total Revenue</span>
+        </div>
+        <div class="stat">
+            <span class="stat-number">469</span>
+            <span class="stat-label">Transactions</span>
+        </div>
+    </div>
+
+    <!-- MAIN AREA -->
+    <div class="main">
+
+        <!-- LEFT: INPUT FORM -->
+        <div class="input-card">
+            <h2>🔍 Enter Customer Details</h2>
+
+            <label>Customer City</label>
+            <select id="cityInput">
+                <option value="">-- Select City --</option>
+                <option value="Chennai">Chennai</option>
+                <option value="Coimbatore">Coimbatore</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Mangalore">Mangalore</option>
+                <option value="Bangalore">Bangalore</option>
+                <option value="Pondicherry">Pondicherry</option>
+                <option value="Kerala">Kerala</option>
+                <option value="Andaman">Andaman & Nicobar</option>
+                <option value="Kolkata">Kolkata</option>
+                <option value="Madurai">Madurai</option>
+                <option value="Trichy">Trichy</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Delhi">Delhi</option>
+            </select>
+
+            <label>Product Needed</label>
+            <select id="productInput">
+                <option value="">-- Select Product --</option>
+                <option value="Dishwasher">Dishwasher</option>
+                <option value="Combi Oven">Combi Oven</option>
+                <option value="Ice Cube Machine">Ice Cube Machine</option>
+                <option value="Refrigeration">Refrigeration</option>
+                <option value="Glass Washer">Glass Washer</option>
+                <option value="Blast Chiller">Blast Chiller</option>
+                <option value="Bain Marie">Bain Marie</option>
+                <option value="Display Counter">Display Counter</option>
+                <option value="Juice Dispenser">Juice Dispenser</option>
+                <option value="Undercounter Dishwasher">Undercounter Dishwasher</option>
+                <option value="Peeler">Peeler</option>
+                <option value="Slicer">Slicer</option>
+            </select>
+
+            <label>Customer Name</label>
+            <input type="text" id="customerName"
+                   placeholder="e.g. Sea Shell, Hotel VDARA...">
+
+            <label>Customer Type</label>
+            <select id="verticalInput">
+                <option value="">-- Select Type --</option>
+                <option value="Hotel">Hotel</option>
+                <option value="Restaurant">Restaurant</option>
+                <option value="Hospital">Hospital</option>
+                <option value="Bakery">Bakery</option>
+                <option value="Cafe">Cafe</option>
+                <option value="Catering">Catering</option>
+                <option value="Institution">Institution</option>
+            </select>
+
+            <button onclick="findDealer()">
+                🔍 FIND BEST DEALER
+            </button>
+        </div>
+
+        <!-- RIGHT: RESULTS -->
+        <div class="results-card" id="resultsArea">
+            <div class="placeholder">
+                <p>🎯</p>
+                <p>Select city and product<br>then click Find Best Dealer!</p>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+// ============================================================
+// DEALER DATABASE — Your Real Prego Dealers!
+// ============================================================
+const dealers = [
+    {
+        name: "Venus K Equipments",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        category: "A",
+        score: 75,
+        products: ["Dishwasher","Refrigeration","Ice Cube Machine","Glass Washer"]
+    },
+    {
+        name: "Raha Refrigerator & Home Appliance",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        category: "A",
+        score: 60,
+        products: ["Refrigeration","Display Counter","Ice Cube Machine"]
+    },
+    {
+        name: "Fortech Kitchen Equipments",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        category: "C",
+        score: 35,
+        products: ["Combi Oven","Dishwasher","Bain Marie"]
+    },
+    {
+        name: "Olive Steel Solutions",
+        city: "Mangalore",
+        state: "Karnataka",
+        category: "A",
+        score: 60,
+        products: ["Dishwasher","Combi Oven","Glass Washer"]
+    },
+    {
+        name: "Kalam Kitchen",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        category: "A",
+        score: 60,
+        products: ["Combi Oven","Blast Chiller","Bain Marie","Display Counter"]
+    },
+    {
+        name: "Uday Kitchen",
+        city: "Chennai",
+        state: "Tamil Nadu",
+        category: "C",
+        score: 30,
+        products: ["Dishwasher","Glass Washer"]
+    },
+    {
+        name: "Lakshmi Food Machinery",
+        city: "Coimbatore",
+        state: "Tamil Nadu",
+        category: "C",
+        score: 30,
+        products: ["Refrigeration","Slicer","Peeler"]
+    },
+    {
+        name: "Arun Bakery Trading Company",
+        city: "Coimbatore",
+        state: "Tamil Nadu",
+        category: "B",
+        score: 45,
+        products: ["Combi Oven","Blast Chiller","Bain Marie"]
+    },
+    {
+        name: "Hind Commercial Kitchen Equipment",
+        city: "Hyderabad",
+        state: "Telangana",
+        category: "A",
+        score: 70,
+        products: ["Dishwasher","Combi Oven","Bain Marie","Display Counter"]
+    },
+    {
+        name: "Select Kitchen Equipment",
+        city: "Hyderabad",
+        state: "Telangana",
+        category: "B",
+        score: 50,
+        products: ["Refrigeration","Display Counter","Ice Cube Machine"]
+    },
+    {
+        name: "F.R. Enterprises",
+        city: "Mangalore",
+        state: "Karnataka",
+        category: "B",
+        score: 40,
+        products: ["Dishwasher","Glass Washer","Refrigeration"]
+    },
+    {
+        name: "Arcadia Hotel Suppliers",
+        city: "Coimbatore",
+        state: "Tamil Nadu",
+        category: "C",
+        score: 25,
+        products: ["Refrigeration","Ice Cube Machine"]
+    }
+];
+
+// ============================================================
+// MAIN MATCHING FUNCTION
+// ============================================================
+function findDealer() {
+    // Get inputs
+    const city     = document.getElementById('cityInput').value;
+    const product  = document.getElementById('productInput').value;
+    const customer = document.getElementById('customerName').value.trim();
+    const vertical = document.getElementById('verticalInput').value;
+
+    // Validate
+    if (!city || !product) {
+        alert('⚠️ Please select a City and Product first!');
+        return;
+    }
+
+    // Score every dealer
+    const scored = dealers.map(dealer => {
+        let locationScore = 0;
+        let gradeScore    = 0;
+        let productScore  = 0;
+        let baseScore     = 0;
+
+        // RULE 1 — Location Score (30 pts)
+        if (dealer.city.toLowerCase() === city.toLowerCase()) {
+            locationScore = 30;
+        } else if (dealer.state.toLowerCase().includes(city.toLowerCase())) {
+            locationScore = 15;
+        } else {
+            locationScore = 0;
+        }
+
+        // RULE 2 — Grade Score (25 pts)
+        if (dealer.category === 'A')      gradeScore = 25;
+        else if (dealer.category === 'B') gradeScore = 15;
+        else                              gradeScore = 5;
+
+        // RULE 3 — Product Score (25 pts)
+        const hasProduct = dealer.products.some(p =>
+            p.toLowerCase().includes(product.toLowerCase()) ||
+            product.toLowerCase().includes(p.toLowerCase())
+        );
+        productScore = hasProduct ? 25 : 0;
+
+        // RULE 4 — Base Dealer Score (20 pts)
+        baseScore = Math.min(20, Math.round(dealer.score / 5));
+
+        // TOTAL
+        const total = locationScore + gradeScore + productScore + baseScore;
+
+        return {
+            ...dealer,
+            total,
+            locationScore,
+            gradeScore,
+            productScore,
+            baseScore
+        };
+    });
+
+    // Sort highest to lowest
+    scored.sort((a, b) => b.total - a.total);
+
+    // Get Top 3
+    const top3 = scored.slice(0, 3);
+
+    // Count Green and Red Flags
+    const greenFlags = [
+        top3[0].category === 'A',
+        top3[0].locationScore === 30,
+        top3[0].productScore === 25,
+        top3[0].total >= 60,
+        customer.length > 0
+    ].filter(Boolean).length;
+
+    const redFlags = [
+        top3[0].category === 'C',
+        top3[0].locationScore === 0,
+        top3[0].productScore === 0,
+        top3[0].total < 40
+    ].filter(Boolean).length;
+
+    // Calculate Success Probability
+    const prob = Math.min(95, Math.max(15,
+        50 + (greenFlags * 10) - (redFlags * 15)
+    ));
+
+    // Show Results
+    showResults(top3, greenFlags, redFlags, prob, city, product);
+}
+
+// ============================================================
+// SHOW RESULTS FUNCTION
+// ============================================================
+function showResults(top3, greenFlags, redFlags, prob, city, product) {
+
+    const ranks     = ['🥇', '🥈', '🥉'];
+    const rankNames = ['1st Best Match', '2nd Best Match', '3rd Best Match'];
+
+    // Build dealer cards HTML
+    let dealerHTML = '';
+    top3.forEach((dealer, i) => {
+        dealerHTML += `
+            <div class="dealer-card">
+                <div class="rank-badge">${ranks[i]}</div>
+                <div class="dealer-info">
+                    <div class="dealer-name">${dealer.name}</div>
+                    <div class="dealer-meta">
+                        <span>📍 ${dealer.city}</span>
+                        <span>⭐ Category ${dealer.category}</span>
+                        <span>📦 ${dealer.productScore > 0 ? '✅ Product Match' : '❌ No Product Match'}</span>
+                    </div>
+                </div>
+                <div class="score-box">
+                    <div class="score-number">${dealer.total}</div>
+                    <div class="score-out">/ 100</div>
+                    <div class="score-bar-wrap">
+                        <div class="score-bar-fill" style="width:${dealer.total}%"></div>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    // Prediction result text
+    let predResult = '';
+    if (prob >= 70)      predResult = '🟢 LIKELY SUCCESS';
+    else if (prob >= 50) predResult = '🟡 POSSIBLE SUCCESS';
+    else                 predResult = '🔴 LIKELY TO FAIL';
+
+    // Manager alert
+    let alertClass = '';
+    let alertMsg   = '';
+    if (prob >= 70) {
+        alertClass = 'alert-success';
+        alertMsg   = '✅ Safe to proceed with this match!';
+    } else if (prob >= 50) {
+        alertClass = 'alert-warning';
+        alertMsg   = '⚠️ Proceed with caution — monitor closely!';
+    } else {
+        alertClass = 'alert-danger';
+        alertMsg   = '🚨 High risk — consider a different dealer!';
+    }
+
+    // Put everything in results area
+    document.getElementById('resultsArea').innerHTML = `
+
+        <div class="results-title">
+            🏆 Top 3 Dealers — ${city} / ${product}
+        </div>
+
+        ${dealerHTML}
+
+        <div class="prediction-box">
+            <div class="prediction-title">🔮 Relationship Prediction</div>
+
+            <div class="flags-row">
+                <div class="flag-box">
+                    <div class="flag-count flag-green">${greenFlags}</div>
+                    <div class="flag-label">✅ Green Flags</div>
+                </div>
+                <div class="flag-box">
+                    <div class="flag-count flag-red">${redFlags}</div>
+                    <div class="flag-label">❌ Red Flags</div>
+                </div>
+            </div>
+
+            <div class="prob-row">
+                <div>
+                    <div class="prob-label">Success Probability</div>
+                    <div class="pred-result">${predResult}</div>
+                </div>
+                <div class="prob-value">${prob}%</div>
+            </div>
+
+            <div class="alert-box ${alertClass}">
+                ${alertMsg}
+            </div>
+        </div>
+    `;
+}
+</script>
+</body>
+</html>
