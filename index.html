@@ -39,7 +39,7 @@
 
     /* STATS BAR */
     .stats-bar {
-        background: white;
+        background: rgb(225, 236, 60);
         display: flex;
         justify-content: center;
         gap: 60px;
@@ -80,7 +80,7 @@
 
     /* INPUT CARD */
     .input-card {
-        background: white;
+        background: rgb(223, 150, 192);
         border-radius: 16px;
         padding: 30px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
@@ -347,8 +347,8 @@
     }
 
     .alert-success {
-        background: #d5f5e3;
-        color: #1e8449;
+        background: #a0fac6;
+        color: #072514;
         border: 1px solid #a9dfbf;
     }
 
@@ -359,7 +359,7 @@
     }
 
     .alert-danger {
-        background: #fdedec;
+        background: #dfa9a6;
         color: #c0392b;
         border: 1px solid #f5b7b1;
     }
@@ -377,13 +377,23 @@
             font-size: 22px;
         }
     }
+
+    .header-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
 </style>
 </head>
 <body>
 
     <!-- HEADER -->
     <div class="header">
-        <h1>🏢 PREGO DEALER MATCHING SYSTEM</h1>
+       <div class="header-top">
+    <img src="prego logo.png" alt="Prego" height="55">
+    <h1>PREGO DEALER MATCHING SYSTEM</h1>
+</div>
         <p>Find the right dealer for the right customer — instantly!</p>
     </div>
 
@@ -396,14 +406,6 @@
         <div class="stat">
             <span class="stat-number">177</span>
             <span class="stat-label">Customers</span>
-        </div>
-        <div class="stat">
-            <span class="stat-number">₹38.7L</span>
-            <span class="stat-label">Total Revenue</span>
-        </div>
-        <div class="stat">
-            <span class="stat-number">469</span>
-            <span class="stat-label">Transactions</span>
         </div>
     </div>
 
